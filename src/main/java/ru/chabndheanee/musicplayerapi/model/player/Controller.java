@@ -1,7 +1,10 @@
 package ru.chabndheanee.musicplayerapi.model.player;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Scanner;
 
+@Slf4j
 public abstract class Controller {
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -38,6 +41,7 @@ public abstract class Controller {
     }
 
     private static void printMenu() {
+        log.info("Print menu");
         System.out.println("1. Play");
         System.out.println("2. Next");
         System.out.println("3. Prev");
@@ -46,23 +50,28 @@ public abstract class Controller {
         System.out.println("----------");
     }
     public static void play() {
+        log.info("Controller play");
         player.play();
     }
 
     public static void pause() {
+        log.info("Controller pause");
         player.pause();
     }
 
     public static void addSong() {
+        log.info("Controller addSong");
         System.out.println("Enter song path");
         player.addSong(scanner.next());
     }
 
     public static void next() {
+        log.info("Controller next");
         player.next();
     }
 
     public static void prev() {
+        log.info("Controller prev");
         player.prev();
     }
 }

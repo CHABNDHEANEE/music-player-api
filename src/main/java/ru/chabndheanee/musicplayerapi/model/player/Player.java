@@ -1,7 +1,6 @@
 package ru.chabndheanee.musicplayerapi.model.player;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.chabndheanee.musicplayerapi.model.Track;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +17,7 @@ public class Player {
 
 
     public void play() {
+        log.info("Player play");
         track = playlist.get(currentTrack);
 
         track.play();
@@ -29,22 +29,26 @@ public class Player {
     }
 
     public void pause() {
+        log.info("Player pause");
         track.pause();
         thread.stop();
     }
 
     private void stop() {
+        log.info("Player stop");
         track.stop();
         thread.stop();
     }
 
     public void next() {
+        log.info("Player next");
         currentTrack++;
         stop();
         play();
     }
 
     public void prev() {
+        log.info("Player prev");
         if (track.getPosition() > 10000000) {
             pause();
             track.setPosition(0);
@@ -57,6 +61,7 @@ public class Player {
     }
 
     public void addSong(String path) {
+        log.info("Player addSong");
         try {
             Track track = new Track(new File(path));
             playlist.add(track);
@@ -66,20 +71,3 @@ public class Player {
     }
 }
 
-class SongThread extends Thread {
-    long duration = 0;
-
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
-    @Override
-    public void run() {
-        try {
-            Thread.sleep(duration);
-            Controller.next();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-}
