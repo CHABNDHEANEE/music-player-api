@@ -47,7 +47,7 @@ public abstract class Controller {
         System.out.println("3. Prev");
         System.out.println("4. Stop");
         System.out.println("5. Add Song");
-        System.out.println("----------");
+        System.out.println("-------------");
     }
     public static void play() {
         log.info("Controller play");
