@@ -57,12 +57,18 @@ public class Player {
 
     public void prev() {
         log.info("Player prev");
+
         if (track.getPosition() > 10000000) {
             pause();
             track.setPosition(0);
             play();
             return;
         }
+
+        if (currentTrack == 0) {
+            throw new PlayerException("It's already start of the playlist");
+        }
+
         currentTrack--;
         stop();
         play();
@@ -74,7 +80,7 @@ public class Player {
             Track track = new Track(new File(path));
             playlist.add(track);
         } catch (IOException e) {
-            e.getStackTrace();
+            throw new PlayerException("File with track doesn't exist");
         }
     }
 }
