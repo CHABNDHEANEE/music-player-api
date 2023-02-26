@@ -1,6 +1,7 @@
 package ru.chabndheanee.musicplayerapi.model.player;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.chabndheanee.musicplayerapi.model.exception.PlayerException;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,13 @@ public class Player {
 
     public void play() {
         log.info("Player play");
+
+        if (playlist.isEmpty()) {
+            throw new PlayerException("Playlist is empty");
+        } else if (playlist.size() < currentTrack) {
+            throw new PlayerException("Playlist ended");
+        }
+
         track = playlist.get(currentTrack);
 
         track.play();
