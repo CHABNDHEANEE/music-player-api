@@ -13,6 +13,8 @@ public abstract class Controller {
 
     @SuppressWarnings("InfiniteLoopStatement")
     public static void launch() {
+        player.load();
+
         while (true) {
             printMenu();
             loop:

@@ -4,7 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import ru.chabndheanee.musicplayerapi.model.exception.PlayerException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 
 @SuppressWarnings("deprecation")
@@ -19,6 +23,8 @@ public class Player {
 
     public void play() {
         log.info("Player play");
+
+//        thread.stop();
 
         if (playlist.isEmpty()) {
             throw new PlayerException("Playlist is empty");
@@ -45,11 +51,12 @@ public class Player {
     private void stop() {
         log.info("Player stop");
         track.stop();
-        thread.stop();
+//        thread.stop();
     }
 
     public void next() {
         log.info("Player next");
+        thread.stop();
         currentTrack++;
         stop();
         play();
@@ -69,6 +76,8 @@ public class Player {
             throw new PlayerException("It's already start of the playlist");
         }
 
+        thread.stop();
+
         currentTrack--;
         stop();
         play();
@@ -81,6 +90,49 @@ public class Player {
             playlist.add(track);
         } catch (IOException e) {
             throw new PlayerException("File with track doesn't exist");
+        }
+
+        save();
+    }
+
+    public void save() {
+        log.info("Player save");
+
+        try (Writer writer = new FileWriter("Playlist.csv")) {
+            for (Track track :
+                    playlist) {
+                writer.write(track.getTrackFile().getAbsolutePath());
+                writer.write("\n");
+            }
+        } catch (IOException e) {
+            throw new PlayerException("Error during saving in file. " + e.getMessage());
+        }
+
+        log.info("Player saved");
+    }
+
+    public void load() {
+        log.info("Player load");
+
+        if (!new File("C:\\Users\\rusbe\\dev\\music-player-api\\Playlist.csv").exists()) {
+            return;
+        }
+
+        String strFile = null;
+
+        try {
+            strFile = Files.readString(Path.of("C:\\Users\\rusbe\\dev\\music-player-api\\Playlist.csv"));
+        } catch (IOException ignored) {}
+
+        if (strFile == null || strFile.isBlank()) {
+            return;
+        }
+
+        String[] strings = strFile.split("\n");
+
+        for (String str :
+                strings) {
+            addSong(str);
         }
     }
 }
