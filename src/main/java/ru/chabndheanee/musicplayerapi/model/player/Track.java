@@ -12,20 +12,20 @@ import java.util.Objects;
 @Slf4j
 @Data
 public class Track {
-    String name;
-    Long duration;
-    File trackFile;
+    private String name;
+    private Long duration;
+    private File trackFile;
     private Clip clip;
     private AudioInputStream ais;
-    FileInputStream fileInputStream;
-    long clipPos = 0;
-
+    private FileInputStream fileInputStream;
+    private long clipPos = 0;
     private boolean playing = false;
 
     public Track(File trackFile) throws IOException {
         this.trackFile = trackFile;
         name = trackFile.getName();
         fileInputStream = new FileInputStream(trackFile);
+        duration = Objects.requireNonNull(fileInputStream).getChannel().size() / 128;
     }
 
     public void play() {
@@ -56,14 +56,14 @@ public class Track {
         clip.close();
     }
 
-    public void setDuration() {
-        log.info("Track setDuration");
-        try {
-            duration = Objects.requireNonNull(fileInputStream).getChannel().size() / 128;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public void setDuration() {
+//        log.info("Track setDuration");
+//        try {
+//            duration =
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public long getPosition() {
         log.info("Track getPosition");

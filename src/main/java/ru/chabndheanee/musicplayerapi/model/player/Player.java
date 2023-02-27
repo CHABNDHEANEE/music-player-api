@@ -15,7 +15,7 @@ import java.util.LinkedList;
 @Slf4j
 //@Data
 public class Player {
-    final LinkedList<Track> playlist = new LinkedList<>();
+    private final LinkedList<Track> playlist = new LinkedList<>();
     Track track;
     int currentTrack = 0;
     SongThread thread = new SongThread();
@@ -24,7 +24,7 @@ public class Player {
     public void play() {
         log.info("Player play");
 
-//        thread.stop();
+        thread.interrupt();
 
         if (playlist.isEmpty()) {
             throw new PlayerException("Playlist is empty");
@@ -35,7 +35,6 @@ public class Player {
         track = playlist.get(currentTrack);
 
         track.play();
-        track.setDuration();
 
         thread = new SongThread();
         thread.setDuration(track.getDuration());
@@ -51,12 +50,12 @@ public class Player {
     private void stop() {
         log.info("Player stop");
         track.stop();
-//        thread.stop();
+//        thread.interrupt();
     }
 
     public void next() {
         log.info("Player next");
-        thread.stop();
+//        thread.stop();
         currentTrack++;
         stop();
         play();
@@ -76,7 +75,7 @@ public class Player {
             throw new PlayerException("It's already start of the playlist");
         }
 
-        thread.stop();
+//        thread.stop();
 
         currentTrack--;
         stop();

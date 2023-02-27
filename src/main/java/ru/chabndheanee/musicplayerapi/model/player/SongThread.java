@@ -1,7 +1,7 @@
 package ru.chabndheanee.musicplayerapi.model.player;
 
 class SongThread extends Thread {
-    long duration = 0;
+    private long duration = 0;
 
     public void setDuration(long duration) {
         this.duration = duration;
@@ -12,8 +12,6 @@ class SongThread extends Thread {
         try {
             Thread.sleep(duration);
             Controller.next();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (InterruptedException ignored) {}
     }
 }
