@@ -1,5 +1,6 @@
 package ru.chabndheanee.musicplayerapi.model.player;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import ru.chabndheanee.musicplayerapi.model.exception.PlayerException;
 
@@ -13,12 +14,13 @@ import java.util.LinkedList;
 
 @SuppressWarnings("deprecation")
 @Slf4j
-//@Data
+@Data
 public class Player {
     private final LinkedList<Track> playlist = new LinkedList<>();
-    Track track;
-    int currentTrack = 0;
-    SongThread thread = new SongThread();
+    private Track track;
+    private int currentTrack = 0;
+    private SongThread thread = new SongThread();
+    private boolean playing = false;
 
 
     public void play() {
@@ -26,11 +28,9 @@ public class Player {
 
         thread.interrupt();
 
-        if (playlist.isEmpty()) {
-            throw new PlayerException("Playlist is empty");
-        } else if (playlist.size() < currentTrack) {
-            throw new PlayerException("Playlist ended");
-        }
+        checkPlaylistIsEmpty();
+
+        playing = true;
 
         track = playlist.get(currentTrack);
 
@@ -43,26 +43,41 @@ public class Player {
 
     public void pause() {
         log.info("Player pause");
+
+        checkTrackPlaying();
+
         track.pause();
+        playing = false;
         thread.stop();
     }
 
     private void stop() {
         log.info("Player stop");
+
+        checkTrackPlaying();
+
         track.stop();
-//        thread.interrupt();
+        playing = false;
     }
 
     public void next() {
         log.info("Player next");
-//        thread.stop();
+
+        checkPlaylistEnded();
+
         currentTrack++;
-        stop();
+
+        if (playing) {
+            stop();
+        }
+
         play();
     }
 
     public void prev() {
         log.info("Player prev");
+
+        checkStartOfPlaylist();
 
         if (track.getPosition() > 10000000) {
             pause();
@@ -70,12 +85,6 @@ public class Player {
             play();
             return;
         }
-
-        if (currentTrack == 0) {
-            throw new PlayerException("It's already start of the playlist");
-        }
-
-//        thread.stop();
 
         currentTrack--;
         stop();
@@ -85,8 +94,8 @@ public class Player {
     public void addSong(String path) {
         log.info("Player addSong");
         try {
-            Track track = new Track(new File(path));
-            playlist.add(track);
+            Track addedTrack = new Track(new File(path));
+            playlist.add(addedTrack);
         } catch (IOException e) {
             throw new PlayerException("File with track doesn't exist");
         }
@@ -132,6 +141,36 @@ public class Player {
         for (String str :
                 strings) {
             addSong(str);
+        }
+
+        track = playlist.get(0);
+    }
+
+    private void checkTrackPlaying() {
+        if (track == null || !playing) {
+            thread.interrupt();
+            throw new PlayerException("Track is not playing!");
+        }
+    }
+
+    private void checkPlaylistIsEmpty() {
+        if (playlist.isEmpty()) {
+            thread.interrupt();
+            throw new PlayerException("Playlist is empty");
+        }
+    }
+
+    private void checkPlaylistEnded() {
+        if (currentTrack + 1 == playlist.size()) {
+            thread.interrupt();
+            throw new PlayerException("Playlist ended");
+        }
+    }
+
+    private void checkStartOfPlaylist() {
+        if (currentTrack == 0) {
+            thread.interrupt();
+            throw new PlayerException("It's already start of the playlist");
         }
     }
 }

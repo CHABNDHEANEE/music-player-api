@@ -38,6 +38,7 @@ public class Track {
                 clip.setMicrosecondPosition(clipPos);
             }
             clip.start();
+            playing = true;
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -52,18 +53,10 @@ public class Track {
 
     public void stop() {
         log.info("Track stop");
+
         clip.stop();
         clip.close();
     }
-
-//    public void setDuration() {
-//        log.info("Track setDuration");
-//        try {
-//            duration =
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     public long getPosition() {
         log.info("Track getPosition");
@@ -73,5 +66,9 @@ public class Track {
     public void setPosition(long position) {
         log.info("Track setPosition");
         clipPos = position;
+    }
+
+    public boolean isPlaying() {
+        return playing;
     }
 }
