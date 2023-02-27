@@ -103,9 +103,39 @@ public class Player {
         log.info("Player addSong");
         try {
             Track addedTrack = new Track(new File(path));
+
+            if (playlist.contains(addedTrack)) {
+                throwException(new PlayerException("The playlist already contains the track"));
+            }
             playlist.add(addedTrack);
         } catch (IOException e) {
-            throw new PlayerException("File with track doesn't exist");
+            throwException(new PlayerException("File with track doesn't exist"));
+        }
+
+        save();
+    }
+
+    public void deleteSong(String path) {
+        log.info("Player deleteSong");
+
+        try {
+            Track deletingTrack = new Track(new File(path));
+
+            if (playlist.contains(deletingTrack)) {
+                int indexOfTrack = playlist.indexOf(deletingTrack);
+                if (indexOfTrack != currentTrack) {
+                    if (indexOfTrack < currentTrack) {
+                        currentTrack--;
+                    }
+                    playlist.remove(deletingTrack);
+                } else {
+                    throwException(new PlayerException("You can't delete track that is playing now"));
+                }
+            } else {
+                throwException(new PlayerException("The playlist doesn't contains the track"));
+            }
+        } catch (IOException e) {
+            throwException(new PlayerException("File with track doesn't exist"));
         }
 
         save();
@@ -124,7 +154,7 @@ public class Player {
             writer.write("\n");
             writer.write(String.valueOf(playlist.get(currentTrack).getClipPos()));
         } catch (IOException e) {
-            throw new PlayerException("Error during saving in file. " + e.getMessage());
+            throwException(new PlayerException("Error during saving in file. " + e.getMessage()));
         }
 
         log.info("Player saved");
@@ -167,30 +197,31 @@ public class Player {
 
     private void checkTrackPlaying() {
         if (track == null || !playing) {
-            thread.interrupt();
-            throw new PlayerException("Track is not playing!");
+            throwException(new PlayerException("Track is not playing!"));
         }
     }
 
     private void checkPlaylistIsEmpty() {
         if (playlist.isEmpty()) {
-            thread.interrupt();
-            throw new PlayerException("Playlist is empty");
+            throwException(new PlayerException("Playlist is empty"));
         }
     }
 
     private void checkPlaylistEnded() {
         if (currentTrack + 1 == playlist.size()) {
-            thread.interrupt();
-            throw new PlayerException("Playlist ended");
+            throwException(new PlayerException("Playlist ended"));
         }
     }
 
     private void checkStartOfPlaylist() {
         if (currentTrack == 0) {
-            thread.interrupt();
-            throw new PlayerException("It's already start of the playlist");
+            throwException(new PlayerException("It's already start of the playlist"));
         }
+    }
+
+    private void throwException(RuntimeException exc) {
+        thread.interrupt();
+        throw exc;
     }
 }
 

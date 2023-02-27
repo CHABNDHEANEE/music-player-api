@@ -13,6 +13,20 @@ import java.util.Objects;
 @Data
 public class Track {
     private String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Track track = (Track) o;
+        return name.equals(track.name) && duration.equals(track.duration);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, duration);
+    }
+
     private Long duration;
     private File trackFile;
     private Clip clip;
