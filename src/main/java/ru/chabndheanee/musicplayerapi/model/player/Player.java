@@ -123,9 +123,17 @@ public class Player {
 
             if (playlist.contains(deletingTrack)) {
                 int indexOfTrack = playlist.indexOf(deletingTrack);
-                if (indexOfTrack != currentTrack) {
+                if (indexOfTrack != currentTrack || !playing) {
                     if (indexOfTrack < currentTrack) {
                         currentTrack--;
+                    } else if (indexOfTrack == currentTrack) {
+                        if (currentTrack != 0) {
+                            if (playlist.size() - 1 != currentTrack)  {
+                                currentTrack++;
+                            } else {
+                                currentTrack--;
+                            }
+                        }
                     }
                     playlist.remove(deletingTrack);
                 } else {
@@ -143,6 +151,10 @@ public class Player {
 
     public void save() {
         log.info("Player save");
+
+        if (playlist.isEmpty()) {
+            return;
+        }
 
         try (Writer writer = new FileWriter("Playlist.csv")) {
             for (Track track :
