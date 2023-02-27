@@ -36,6 +36,8 @@ public class Player {
 
         track.play();
 
+        save();
+
         thread = new SongThread();
         thread.setDuration(track.getDuration());
         thread.start();
@@ -48,6 +50,9 @@ public class Player {
 
         track.pause();
         playing = false;
+
+        save();
+
         thread.stop();
     }
 
@@ -87,6 +92,9 @@ public class Player {
         }
 
         currentTrack--;
+
+        save();
+
         stop();
         play();
     }
@@ -112,6 +120,9 @@ public class Player {
                 writer.write(track.getTrackFile().getAbsolutePath());
                 writer.write("\n");
             }
+            writer.write(String.valueOf(currentTrack));
+            writer.write("\n");
+            writer.write(String.valueOf(playlist.get(currentTrack).getClipPos()));
         } catch (IOException e) {
             throw new PlayerException("Error during saving in file. " + e.getMessage());
         }
@@ -138,12 +149,20 @@ public class Player {
 
         String[] strings = strFile.split("\n");
 
-        for (String str :
-                strings) {
-            addSong(str);
+        for (int i = 0; i < strings.length; i++) {
+            if (i == strings.length - 2) {
+                currentTrack = Integer.parseInt(strings[i]);
+            } else if (i == strings.length - 1) {
+                playlist.get(currentTrack).setClipPos(Long.parseLong(strings[i]));
+            } else {
+                File file = new File(strings[i]);
+                try {
+                    playlist.add(new Track(file));
+                } catch (IOException ignored) {}
+            }
         }
 
-        track = playlist.get(0);
+        track = playlist.get(currentTrack);
     }
 
     private void checkTrackPlaying() {

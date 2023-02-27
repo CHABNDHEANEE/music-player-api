@@ -1,13 +1,14 @@
-package ru.chabndheanee.musicplayerapi.model.player;
+package ru.chabndheanee.musicplayerapi.model;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import ru.chabndheanee.musicplayerapi.model.player.Player;
 
 import java.util.Scanner;
 
 @Slf4j
 @Getter
-public abstract class Controller {
+public abstract class PlayerController {
     private static final Scanner scanner = new Scanner(System.in);
 
     private static final Player player = new Player();
