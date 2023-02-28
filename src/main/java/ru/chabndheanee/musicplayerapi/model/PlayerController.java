@@ -3,6 +3,7 @@ package ru.chabndheanee.musicplayerapi.model;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ru.chabndheanee.musicplayerapi.model.player.Player;
+import ru.chabndheanee.musicplayerapi.model.player.Track;
 
 import java.util.Scanner;
 
@@ -36,11 +37,11 @@ public abstract class PlayerController {
                         pause();
                         break loop;
                     case 5:
-                        System.out.println("Enter song path");
+                        System.out.println("Enter song name");
                         addSong(scanner.next());
                         break loop;
                     case 6:
-                        System.out.println("Enter song path to delete");
+                        System.out.println("Enter song name to delete");
                         deleteSong(scanner.next());
                         break loop;
                     default:
@@ -70,9 +71,10 @@ public abstract class PlayerController {
         player.pause();
     }
 
-    public static void addSong(String path) {
+    public static Track addSong(String path) {
         log.info("Controller addSong");
-        player.addSong(path);
+
+        return player.addSong(path);
     }
 
     public static void deleteSong(String path) {

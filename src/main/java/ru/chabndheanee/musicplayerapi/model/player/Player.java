@@ -99,8 +99,10 @@ public class Player {
         play();
     }
 
-    public void addSong(String path) {
+    public Track addSong(String path) {
         log.info("Player addSong");
+
+        path = "src/main/java/ru/chabndheanee/musicplayerapi/src/" + path + ".wav";
         try {
             Track addedTrack = new Track(new File(path));
 
@@ -108,15 +110,19 @@ public class Player {
                 throwException(new PlayerException("The playlist already contains the track"));
             }
             playlist.add(addedTrack);
+            return addedTrack;
         } catch (IOException e) {
             throwException(new PlayerException("File with track doesn't exist"));
         }
 
         save();
+        return null;
     }
 
     public void deleteSong(String path) {
         log.info("Player deleteSong");
+
+        path = "src/main/java/ru/chabndheanee/musicplayerapi/src/" + path + ".wav";
 
         try {
             Track deletingTrack = new Track(new File(path));

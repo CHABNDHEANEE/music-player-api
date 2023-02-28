@@ -103,14 +103,14 @@ public class PlayerTest {
     }
 
     void addSong1() {
-        player.addSong("C:\\Users\\rusbe\\dev\\music-player-api\\src\\main\\java\\ru\\chabndheanee\\musicplayerapi\\src\\532_full_dynamic-upbeat-logo_0012_preview.wav");
+        player.addSong("532_full_dynamic-upbeat-logo_0012_preview");
     }
 
     void addSong2() {
-        player.addSong("C:\\Users\\rusbe\\dev\\music-player-api\\src\\main\\java\\ru\\chabndheanee\\musicplayerapi\\src\\Metallica_-_Nothing_Else_Matters_(ColdMP3.com).wav");
+        player.addSong("Metallica_-_Nothing_Else_Matters_(ColdMP3.com)");
     }
 
     void deleteSong1() {
-        player.deleteSong("C:\\Users\\rusbe\\dev\\music-player-api\\src\\main\\java\\ru\\chabndheanee\\musicplayerapi\\src\\532_full_dynamic-upbeat-logo_0012_preview.wav");
+        player.deleteSong("532_full_dynamic-upbeat-logo_0012_preview");
     }
 }
