@@ -1,5 +1,6 @@
 package ru.chabndheanee.musicplayerapi.model.player;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.chabndheanee.musicplayerapi.model.exception.PlayerException;
 
@@ -7,7 +8,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class PlayerTestPlayer extends PlayerControllerTest {
+public class PlayerTest {
+
+    Player player;
+
+    @BeforeEach
+    void beforeEach() {
+        player = new Player();
+    }
+
 
     @Test
     void playSong_WithEmptyPlaylist_AndExpectError() {
@@ -91,5 +100,17 @@ public class PlayerTestPlayer extends PlayerControllerTest {
         Player newPlayer = new Player();
         newPlayer.load();
         assertThat(newPlayer.getPlaylist().size(), is(player.getPlaylist().size()));
+    }
+
+    void addSong1() {
+        player.addSong("C:\\Users\\rusbe\\dev\\music-player-api\\src\\main\\java\\ru\\chabndheanee\\musicplayerapi\\src\\532_full_dynamic-upbeat-logo_0012_preview.wav");
+    }
+
+    void addSong2() {
+        player.addSong("C:\\Users\\rusbe\\dev\\music-player-api\\src\\main\\java\\ru\\chabndheanee\\musicplayerapi\\src\\Metallica_-_Nothing_Else_Matters_(ColdMP3.com).wav");
+    }
+
+    void deleteSong1() {
+        player.deleteSong("C:\\Users\\rusbe\\dev\\music-player-api\\src\\main\\java\\ru\\chabndheanee\\musicplayerapi\\src\\532_full_dynamic-upbeat-logo_0012_preview.wav");
     }
 }
