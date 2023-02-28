@@ -1,9 +1,7 @@
 package ru.chabndheanee.musicplayerapi.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.chabndheanee.musicplayerapi.model.PlayerController;
 
@@ -14,8 +12,9 @@ public class ControllerPlayer {
     public void play() {
         log.info("Play");
 
+
         PlayerController.play();
-        ok();
+
     }
 
     @GetMapping("/player/pause")
@@ -38,8 +37,5 @@ public class ControllerPlayer {
 
         PlayerController.prev();
     }
-
-    @ResponseStatus(code = HttpStatus.OK, reason = "OK")
-    private void ok() {}
 }
 

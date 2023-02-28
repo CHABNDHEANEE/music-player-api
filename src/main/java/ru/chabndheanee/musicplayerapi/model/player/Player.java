@@ -29,6 +29,10 @@ public class Player {
     public void play() {
         log.info("Player play");
 
+        if (playing) {
+            throw new PlayerException("Track already is playing");
+        }
+
         thread.interrupt();
 
         checkPlaylistIsEmpty();
