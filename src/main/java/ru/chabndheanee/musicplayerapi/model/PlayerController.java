@@ -71,15 +71,15 @@ public abstract class PlayerController {
         player.pause();
     }
 
-    public static Track addSong(String path) {
+    public static Track addSong(String name) {
         log.info("Controller addSong");
 
-        return player.addSong(path);
+        return player.addSong(name);
     }
 
-    public static void deleteSong(String path) {
+    public static Track deleteSong(String name) {
         log.info("Controller deleteSong()");
-        player.deleteSong(path);
+        return player.deleteSong(name);
     }
 
     public static void next() {

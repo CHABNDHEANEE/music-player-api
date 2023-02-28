@@ -119,7 +119,7 @@ public class Player {
         return null;
     }
 
-    public void deleteSong(String path) {
+    public Track deleteSong(String path) {
         log.info("Player deleteSong");
 
         path = "src/main/java/ru/chabndheanee/musicplayerapi/src/" + path + ".wav";
@@ -141,7 +141,9 @@ public class Player {
                             }
                         }
                     }
+                    save();
                     playlist.remove(deletingTrack);
+                    return deletingTrack;
                 } else {
                     throwException(new PlayerException("You can't delete track that is playing now"));
                 }
@@ -153,6 +155,8 @@ public class Player {
         }
 
         save();
+
+        return null;
     }
 
     public void save() {
