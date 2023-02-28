@@ -22,6 +22,9 @@ public class Player {
     private SongThread thread = new SongThread();
     private boolean playing = false;
 
+    public Player() {
+        load();
+    }
 
     public void play() {
         log.info("Player play");
@@ -97,6 +100,14 @@ public class Player {
 
         stop();
         play();
+    }
+
+    public String getCurrentTrackName() {
+        log.info("Get current track name");
+
+        checkPlaylistIsEmpty();
+
+        return playlist.get(currentTrack).getName();
     }
 
     public Track addSong(String path) {

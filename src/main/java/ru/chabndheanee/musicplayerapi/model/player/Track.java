@@ -1,5 +1,6 @@
 package ru.chabndheanee.musicplayerapi.model.player;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,26 +14,18 @@ import java.util.Objects;
 @Data
 public class Track {
     private String name;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Track track = (Track) o;
-        return name.equals(track.name) && duration.equals(track.duration);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, duration);
-    }
-
     private Long duration;
+    @JsonIgnore
     private File trackFile;
+    @JsonIgnore
     private Clip clip;
+    @JsonIgnore
     private AudioInputStream ais;
+    @JsonIgnore
     private FileInputStream fileInputStream;
+    @JsonIgnore
     private long clipPos = 0;
+    @JsonIgnore
     private boolean playing = false;
 
     public Track(File trackFile) throws IOException {
@@ -40,6 +33,13 @@ public class Track {
         name = trackFile.getName();
         fileInputStream = new FileInputStream(trackFile);
         duration = Objects.requireNonNull(fileInputStream).getChannel().size() / 128;
+        try {
+            clip = AudioSystem.getClip();
+            ais = AudioSystem.getAudioInputStream(trackFile);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
     }
 
     public void play() {
@@ -84,5 +84,18 @@ public class Track {
 
     public boolean isPlaying() {
         return playing;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Track track = (Track) o;
+        return name.equals(track.name) && duration.equals(track.duration);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, duration);
     }
 }

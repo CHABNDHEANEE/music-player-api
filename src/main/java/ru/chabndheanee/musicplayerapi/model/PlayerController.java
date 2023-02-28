@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import ru.chabndheanee.musicplayerapi.model.player.Player;
 import ru.chabndheanee.musicplayerapi.model.player.Track;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 @Slf4j
@@ -80,6 +82,18 @@ public abstract class PlayerController {
     public static Track deleteSong(String name) {
         log.info("Controller deleteSong()");
         return player.deleteSong(name);
+    }
+
+    public static List<Track> getPlaylist() {
+        log.info("Controller getPlaylist");
+
+        return new ArrayList<>(player.getPlaylist());
+    }
+
+    public static String getCurrentTrackName() {
+        log.info("Controller current track name");
+
+        return player.getCurrentTrackName();
     }
 
     public static void next() {
