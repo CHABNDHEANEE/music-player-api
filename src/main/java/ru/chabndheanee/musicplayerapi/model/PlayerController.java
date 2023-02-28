@@ -36,10 +36,12 @@ public abstract class PlayerController {
                         pause();
                         break loop;
                     case 5:
-                        addSong();
+                        System.out.println("Enter song path");
+                        addSong(scanner.next());
                         break loop;
                     case 6:
-                        deleteSong();
+                        System.out.println("Enter song path to delete");
+                        deleteSong(scanner.next());
                         break loop;
                     default:
                         System.out.println("Wrong command, please try another");
@@ -68,17 +70,14 @@ public abstract class PlayerController {
         player.pause();
     }
 
-    public static void addSong() {
+    public static void addSong(String path) {
         log.info("Controller addSong");
-        System.out.println("Enter song path");
-        player.addSong(scanner.next());
+        player.addSong(path);
     }
 
-    public static void deleteSong() {
+    public static void deleteSong(String path) {
         log.info("Controller deleteSong()");
-
-        System.out.println("Enter song path to delete");
-        player.deleteSong(scanner.next());
+        player.deleteSong(path);
     }
 
     public static void next() {
