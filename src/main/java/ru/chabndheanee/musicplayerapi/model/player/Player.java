@@ -117,7 +117,7 @@ public class Player {
     public Track addSong(String path) {
         log.info("Player addSong");
 
-        path = "src/main/java/ru/chabndheanee/musicplayerapi/src/" + path + ".wav";
+        path = "src\\main\\resources\\Tracks\\" + path + ".wav";
         try {
             Track addedTrack = new Track(new File(path));
 
@@ -137,7 +137,7 @@ public class Player {
     public Track deleteSong(String path) {
         log.info("Player deleteSong");
 
-        path = "src/main/java/ru/chabndheanee/musicplayerapi/src/" + path + ".wav";
+        path = "src\\main\\resources\\Tracks\\" + path + ".wav";
 
         try {
             Track deletingTrack = new Track(new File(path));
@@ -181,7 +181,7 @@ public class Player {
             return;
         }
 
-        try (Writer writer = new FileWriter("Playlist.csv")) {
+        try (Writer writer = new FileWriter("src\\main\\resources\\Playlist.csv")) {
             for (Track track :
                     playlist) {
                 writer.write(track.getTrackFile().getAbsolutePath());
@@ -200,14 +200,14 @@ public class Player {
     public void load() {
         log.info("Player load");
 
-        if (!new File("C:\\Users\\rusbe\\dev\\music-player-api\\Playlist.csv").exists()) {
+        if (!new File("src\\main\\resources\\Playlist.csv").exists()) {
             return;
         }
 
         String strFile = null;
 
         try {
-            strFile = Files.readString(Path.of("C:\\Users\\rusbe\\dev\\music-player-api\\Playlist.csv"));
+            strFile = Files.readString(Path.of("src\\main\\resources\\Playlist.csv"));
         } catch (IOException ignored) {}
 
         if (strFile == null || strFile.isBlank()) {

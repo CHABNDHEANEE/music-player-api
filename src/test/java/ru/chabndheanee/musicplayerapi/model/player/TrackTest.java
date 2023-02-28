@@ -14,7 +14,7 @@ public class TrackTest {
 
     @BeforeEach
     void beforeEach() throws IOException {
-        track = new Track(new File("C:\\Users\\rusbe\\dev\\music-player-api\\src\\main\\java\\ru\\chabndheanee\\musicplayerapi\\src\\532_full_dynamic-upbeat-logo_0012_preview.wav"));
+        track = new Track(new File("src/main/resources/Tracks/532_full_dynamic-upbeat-logo_0012_preview.wav"));
 
     }
 

@@ -15,6 +15,7 @@ public class PlayerTest {
     @BeforeEach
     void beforeEach() {
         player = new Player();
+        player.getPlaylist().clear();
     }
 
 
@@ -98,7 +99,6 @@ public class PlayerTest {
         assertThat(player.getPlaylist().size(), is(1));
         player.save();
         Player newPlayer = new Player();
-        newPlayer.load();
         assertThat(newPlayer.getPlaylist().size(), is(player.getPlaylist().size()));
     }
 
